@@ -3,10 +3,14 @@
 
 ## First Steps:
 
-1. Learn about ncurses, get something working for input.
-2. ???
-3. ???
-4. Profit
+Listening to the keys, have a window open now.
+You press a button and the value is printed.
+Press many of them and it looks like a barber pole.
+I suggest you press the `*` key because reasons...
+
+It's kinda strange that it acts the way it does.
+But I'm learning!
+
 
 ## Game Ideas:
 
@@ -18,6 +22,7 @@
 
 ## Intructions:
 
+* Make sure this is a `C++` program not a `C` or `C+` program.
 * Make sure all functions are in Copliens Form.
 * Your program must be compiled with a Makefile
 * The executable must be named ft\_retro
