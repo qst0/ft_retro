@@ -3,14 +3,15 @@
 
 ## First Steps:
 
-Listening to the keys, have a window open now.
-You press a button and the value is printed.
-Press many of them and it looks like a barber pole.
-I suggest you press the `*` key because reasons...
+Check out the ncurses demo folder for some examples.
 
-It's kinda strange that it acts the way it does.
-But I'm learning!
+Will be adding online resources soon too.
 
+Even more experementation:
+I have a ball bouncing, well, the char '0'
+bouncing around the window.
+Resize works, and I have an included window demo.
+Now to make this a game.
 
 ## Game Ideas:
 
