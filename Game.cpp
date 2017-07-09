@@ -1,6 +1,8 @@
-#include "Game.hpp"
 #include <iostream>
 #include <unistd.h>
+
+#include "Game.hpp"
+#include "GameObject.hpp"
 
 int Game::init() {
  this->win = initscr();
@@ -48,8 +50,34 @@ void Game::run() {
   addch(' ');
  }
 
+ int maxy, maxx;
+ getmaxyx(win, maxy, maxx);
+
+ Rect game_area;
+ game_area.x = 0;
+ game_area.y = 0;
+ game_area.width = maxx;
+ game_area.length = maxy;
+
+ stars.setBounds(game_area);
+
  int in_char;
  while(42){
+	
+	 for (size_t i = 0; i < stars.getCount(); i++) {
+	 if (stars.getData()[i].isActive()) {
+		int star_x = stars.getData()[i].getPos().x;
+		int star_y = stars.getData()[i].getPos().y;
+		 mvaddch(star_y, star_x, ' ');
+	 }
+	}
+
+	usleep(30000); // 30ms
+
+	stars.update();
+	
+	// NEW CODE ABOVE
+
  	in_char = wgetch(win);
 
 	mvaddch(p1.pos.y, p1.pos.x, ' ');
@@ -77,7 +105,15 @@ void Game::run() {
 		 break;
 	}
 
- 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
+	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
+
+	for (size_t i = 0; i < stars.getCount(); i++) {
+		if (stars.getData()[i].isActive()) {
+			int star_x = stars.getData()[i].getPos().x;
+			int star_y = stars.getData()[i].getPos().y;
+			mvaddch(star_y, star_x, '*');
+		}
+	}
 
 	usleep(10000); // 10ms
 	

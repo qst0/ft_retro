@@ -5,7 +5,7 @@ JUNK = ._rush00.en.pdf
 CXX = g++
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror -Wno-unused
 
-FILENAMES = main.cpp Game.cpp
+FILENAMES = main.cpp Game.cpp GameObject.cpp
 
 INCLUDE = -I.
 LINK = -lncurses
