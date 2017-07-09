@@ -8,19 +8,19 @@
 
 class Game {
 
-public: 
+public:
+	WINDOW*					win;
+	Player					p1;
+	GameObjectField	stars;
+
 	Game();
 	Game(Game const & src);
 	Game & operator=(Game const & rhs);
 	~Game();
 
-	WINDOW*					win;
-	Player					p1;
-	GameObjectField	stars;
-
-	int							init();
 	void						run();
-	void						close();
+	bool						collisionHandler();	// returns true if collision is detected?
+	void						gameOver(); // if collision detected puts Game Over screen
 
 private:
 

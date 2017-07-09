@@ -47,27 +47,57 @@ Game::~Game( void ) {  // close()
 
 /* ******************************* ACTION  ******************************* */
 
-void Game::run() {
- move (5, 5);
+bool	Game::collisionHandler() {
+	int star_x, star_y;
+	for (size_t i = 0; i < stars.getCount(); i++) {
+		if (stars.getData()[i].isActive()) {
+			star_x = stars.getData()[i].getPos().x;
+			star_y = stars.getData()[i].getPos().y;
+			if (star_x == p1.pos.x && star_y == p1.pos.y) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
- // std::string text = "Hello World!";
- // for (size_t i = 0; i < text.size(); i++) {
- //  addch(text[i]);
- //  addch(' ');
- // }
+void	Game::gameOver() {
+	int in_char;
 
- int maxy, maxx;
- getmaxyx(win, maxy, maxx);
- Rect game_area(maxy, maxx); // init rect with 0,0 origin and width and height
- stars.setBounds(game_area);
+	in_char = wgetch(win);
+	while(42) {
+		in_char = wgetch(win);
+		if (in_char == 'q')
+			std::exit(0);
+		refresh();
+		move (5, 5);
+		std::string text = "GAME OVER";
+		for (size_t i = 0; i < text.size(); i++) {
+		  addch(text[i]);
+		  addch(' ');
+		}
+	}
+}
 
- int in_char;
- while(42){
+void	Game::run() {
+
+	int maxy, maxx;
+	int star_x, star_y;
+	getmaxyx(win, maxy, maxx);
+	Rect game_area(maxy, maxx); // init rect with 0,0 origin and width and height
+	stars.setBounds(game_area);
+
+	int in_char;
+	while(42){
+ 
+ 	// Collision detection here
+	if (collisionHandler() == true)
+		gameOver();
 
 	for (size_t i = 0; i < stars.getCount(); i++) {
 		if (stars.getData()[i].isActive()) {
-			int star_x = stars.getData()[i].getPos().x;
-			int star_y = stars.getData()[i].getPos().y;
+			star_x = stars.getData()[i].getPos().x;
+			star_y = stars.getData()[i].getPos().y;
 			mvaddch(star_y, star_x, ' ');
 		}
 	}
@@ -77,6 +107,14 @@ void Game::run() {
 	stars.update();
 	
 	// NEW CODE ABOVE
+
+	for (size_t i = 0; i < stars.getCount(); i++) {
+		if (stars.getData()[i].isActive()) {
+			star_x = stars.getData()[i].getPos().x;
+			star_y = stars.getData()[i].getPos().y;
+			mvaddch(star_y, star_x, '*');
+		}
+	}
 
  	in_char = wgetch(win);
 
@@ -92,21 +130,13 @@ void Game::run() {
 		p1.pos.x--;
 	else if ((in_char == KEY_RIGHT || in_char == 'd') && p1.pos.x < maxx - 2)
 		p1.pos.x++;
-
+	
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
-
-	for (size_t i = 0; i < stars.getCount(); i++) {
-		if (stars.getData()[i].isActive()) {
-			int star_x = stars.getData()[i].getPos().x;
-			int star_y = stars.getData()[i].getPos().y;
-			mvaddch(star_y, star_x, '*');
-		}
-	}
 
 	usleep(10000); // 10ms
 	
 	refresh();
- }
+	}
 }
 
 // void Game::close() {
