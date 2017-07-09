@@ -4,19 +4,23 @@
 # include <ncurses.h>
 # include <string>
 
-# include "GameObject.hpp" 
+# include "GameObjectField.hpp" // contains GameObject.hpp and Rect.hpp and Player.hpp
 
 class Game {
 
 public: 
-	
- WINDOW* win;
- player p1;
- GameObjectField stars;
+	Game();
+	Game(Game const & src);
+	Game & operator=(Game const & rhs);
+	~Game();
 
- int init();
- void run();
- void close();
+	WINDOW*					win;
+	Player					p1;
+	GameObjectField	stars;
+
+	int							init();
+	void						run();
+	void						close();
 
 private:
 

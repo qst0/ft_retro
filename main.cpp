@@ -5,9 +5,9 @@ int main(int argc, char** argv) {
  (void)argv;
  Game game;
 
- if(game.init() == 0)
+ // if(game.init() == 0)
 	 game.run();
  
- game.close();
+ // game.close();
  return (0);
 }
