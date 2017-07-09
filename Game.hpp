@@ -11,10 +11,13 @@
 class Game {
 
 public:
-	WINDOW*					win;
-	Player					p1;
-	GameObjectField	stars;
-	Bullets					bullet;
+	
+	WINDOW*						main_window;
+	WINDOW*						game_window;
+
+	Player						p1;
+	GameObjectField				stars;
+	Bullets						bullets;
 
 	Game();
 	Game(Game const & src);

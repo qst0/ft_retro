@@ -1,14 +1,14 @@
 #include "Game.hpp"
 #include "GameObjectField.hpp"
 
-Game::Game( void ) : win(initscr()), p1(6, 12) {  // init() and init player 1 
+Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init player 1 
 	cbreak();
 	noecho();
 	clear();
 	refresh();
 
-	keypad(win, true); //interpret action keys, not escape sequences.
-	nodelay(win, true); //disable wgetch blocking.
+	keypad(main_window, true); //interpret action keys, not escape sequences.
+	nodelay(main_window, true); //disable wgetch blocking.
 	curs_set(0); //make cursor invisible.
 
 	if(!has_colors()) {
@@ -25,11 +25,11 @@ Game::Game( void ) : win(initscr()), p1(6, 12) {  // init() and init player 1
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, 7, 8);
-	wbkgd(win, COLOR_PAIR(1)); 
+	wbkgd(main_window, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
 	attron(COLOR_PAIR(3));
-	box(win, 0, 0);
+	box(main_window, 0, 0);
 	attroff(COLOR_PAIR(3));
 	attroff(A_BOLD);
 }
@@ -40,7 +40,7 @@ Game::Game( Game const & src ) {
 
 Game & Game::operator=( Game const & rhs ) {
 	if ( this != &rhs ) {
-		this->win = rhs.win;
+		this->main_window = rhs.main_window;
 	}
 	return *this;
 }
@@ -68,12 +68,12 @@ bool	Game::collisionHandler() {
 void	Game::gameOver() {
 	int in_char;
 
-	in_char = wgetch(win);
+	in_char = wgetch(main_window);
 	attron(A_BOLD);
-	wbkgd(win, COLOR_PAIR(2));
+	wbkgd(main_window, COLOR_PAIR(2));
 	mvaddch(p1.pos.y, p1.pos.x, 'X');
 	while(42) {
-		in_char = wgetch(win);
+		in_char = wgetch(main_window);
 		if (in_char == 'q') {
 			clear();
 			endwin();
@@ -81,7 +81,7 @@ void	Game::gameOver() {
 		}
 		if (in_char == 'r') {
 			attroff(A_BOLD);
-			wbkgd(win, COLOR_PAIR(1));
+			wbkgd(main_window, COLOR_PAIR(1));
 			break;
 		}
 		move (11, 32);
@@ -113,10 +113,10 @@ void	Game::trailCleaner() {
 		}
 	}
 
-	for (size_t i = 0; i < bullet.getCount(); i++) {
-		if (bullet.getData()[i].isActive()) {
-			star_x = bullet.getData()[i].getPos().x;
-			star_y = bullet.getData()[i].getPos().y;
+	for (size_t i = 0; i < bullets.getCount(); i++) {
+		if (bullets.getData()[i].isActive()) {
+			star_x = bullets.getData()[i].getPos().x;
+			star_y = bullets.getData()[i].getPos().y;
 			mvaddch(star_y, star_x, ' ');
 		}
 	}
@@ -131,10 +131,10 @@ void	Game::print() {
 			mvaddch(star_y, star_x, '@');
 		}
 	}
-	for (size_t i = 0; i < bullet.getCount(); i++) {
-		if (bullet.getData()[i].isActive()) {
-			star_x = bullet.getData()[i].getPos().x;
-			star_y = bullet.getData()[i].getPos().y;
+	for (size_t i = 0; i < bullets.getCount(); i++) {
+		if (bullets.getData()[i].isActive()) {
+			star_x = bullets.getData()[i].getPos().x;
+			star_y = bullets.getData()[i].getPos().y;
 			mvaddch(star_y, star_x, '-');
 		}
 	}
@@ -142,7 +142,7 @@ void	Game::print() {
 
 void Game::controlHandler(int maxx, int maxy) {
 	int in_char;
-	in_char = wgetch(win);
+	in_char = wgetch(main_window);
 
 	mvaddch(p1.pos.y, p1.pos.x, ' ');
 
@@ -152,8 +152,7 @@ void Game::controlHandler(int maxx, int maxy) {
 		std::exit(0);
 	}
 	else if (in_char == ' ') {
-		// addstr("wut??");
-		bullet.activate(p1.pos.x, p1.pos.y);
+		bullets.activate(p1.pos.x, p1.pos.y);
 	}
 	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 1)
 		p1.pos.y--;
@@ -169,11 +168,11 @@ void	Game::run() {
 
 	int maxy, maxx;
 	int star_x, star_y;
-	getmaxyx(win, maxy, maxx);
-	Rect game_area(maxy, maxx); // init rect with 0,0 origin and width and height
+	getmaxyx(main_window, maxy, maxx);
+	// init rect with 0,0 origin and width and height
+	Rect game_area(maxy, maxx);
 	stars.setBounds(game_area);
-	bullet.setBounds(game_area);
-
+	bullets.setBounds(game_area);
 	
 	while(42){
  
@@ -182,10 +181,9 @@ void	Game::run() {
 		gameOver();
 
 	trailCleaner(); // Cleaning up trails for chars
-	usleep(30000); // 30ms
 
 	stars.update();
-	bullet.update();
+	bullets.update();
 	
 	print();
 
@@ -193,7 +191,7 @@ void	Game::run() {
 	
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
 
-	usleep(10000); // 10ms
+	usleep(42000); // 42ms
 	
 	refresh();
 	}
