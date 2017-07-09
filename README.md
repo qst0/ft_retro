@@ -3,19 +3,19 @@
 
 ## First Steps:
 
-Check out the ncurses demo folder for some examples.
+Working through this tutorial to make a game:
 
-Will be adding online resources soon too.
+https://github.com/fundamelon/terminal-game-tutorial
 
-Even more experementation:
-I have a ball bouncing, well, the char '0'
-bouncing around the window.
-Resize works, and I have an included window demo.
-Now to make this a game.
+This just has "Hello World!" a `box()` border and player movement.
+
+It's really a great start though!
+
+Check out the ncurses demo folder for other examples.
 
 ## Game Ideas:
 
-???
+??? - Space Dodger (Just like the tutorial for now!)
 
 ## Authors:
 * qho
