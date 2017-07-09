@@ -65,6 +65,27 @@ bool	Game::collisionHandler() {
 	return false;
 }
 
+void	Game::shootStar() {
+	int star_x, star_y;
+	int	bull_x, bull_y;
+	for (size_t i = 0; i < stars.getCount(); i++) {
+		if (stars.getData()[i].isActive()) {
+			star_x = stars.getData()[i].getPos().x;
+			star_y = stars.getData()[i].getPos().y;
+			for (size_t j = 0; j < bullet.getCount(); j++) {
+				bull_x = bullet.getData()[j].getPos().x;
+				bull_y = bullet.getData()[j].getPos().y;
+				if (star_x == bull_x && star_y == bull_y) {
+					stars.getData()[i].deactivate();
+					bullet.getData()[j].deactivate();
+					// return true;
+				}
+			}
+		}
+	}
+	// return false;
+}
+
 void	Game::gameOver() {
 	int in_char;
 
@@ -175,24 +196,24 @@ void	Game::run() {
 	bullets.setBounds(game_area);
 	
 	while(42){
- 
  	// Collision detection here
 	if (collisionHandler() == true)
 		gameOver();
 
+	shootStar();
 	trailCleaner(); // Cleaning up trails for chars
 
 	stars.update();
 	bullets.update();
-	
+
 	print();
 
 	controlHandler(maxx, maxy);
-	
+
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
 
 	usleep(42000); // 42ms
-	
+			
 	refresh();
 	}
 }

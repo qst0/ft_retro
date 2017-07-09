@@ -26,6 +26,7 @@ public:
 
 	void						run();
 	bool						collisionHandler();	// returns true if collision is detected?
+	void						shootStar();
 	void						trailCleaner();
 	void						print();
 	void						controlHandler(int maxx, int maxy);
