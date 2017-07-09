@@ -1,17 +1,19 @@
 # C++ Piscine Rush00
 ## ft\_retro
 
-## First Steps:
+## Next Steps:
 
-Working through this tutorial to make a game:
-
+We have hit the wall with this tutorial:
 https://github.com/fundamelon/terminal-game-tutorial
 
-This just has "Hello World!" a `box()` border and player movement.
+Things are falling now, that's good.
 
-It's really a great start though!
+We have a few ideas for moving forward:
 
-Check out the ncurses demo folder for other examples.
+* player drops stuff
+* ground grows to try and kill the player
+* good falling stuff / bad falling stuff
+* story ??? :)
 
 ## Game Ideas:
 
