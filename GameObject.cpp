@@ -1,5 +1,5 @@
 #include <iostream> //arc4random
-
+#include <ncurses.h>
 #include "GameObject.hpp"
 
 GameObject::GameObject() : pos(-42, -42) {
@@ -22,9 +22,15 @@ GameObject & GameObject::operator=(GameObject const & rhs) {
 
 /* ******************************* ACTION  ******************************* */
 
-void GameObject::update() {
+void GameObject::updateToLeft() {
 	//pos.y += 1;
 	pos.x -= 1;
+}
+
+void GameObject::updateToRight() {
+	//pos.y += 1;
+	pos.x += 1;
+	// addstr("bullet updating? ");
 }
 
 void GameObject::activate(int nx, int ny) { // should set y val to -1 ??

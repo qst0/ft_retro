@@ -22,7 +22,7 @@ public:
 	size_t			getCount() const;
 	Rect				getFieldBounds() const;
 
-private:
+protected:
 	Rect				field_bounds;
 	GameObject*	object_set;
 	size_t			object_count;

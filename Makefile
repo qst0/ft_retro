@@ -5,7 +5,7 @@ JUNK		= ._rush00.en.pdf
 CXX			= g++
 CXXFLAGS	= -std=c++98 -Wall -Wextra -Werror -Wno-unused
 
-FILENAMES	= main Game GameObject GameObjectField Rect Player Vec2i Vec2ui
+FILENAMES	= main Game GameObject GameObjectField Rect Player Vec2i Vec2ui Bullets
 SRC			= $(addsuffix .cpp, $(FILENAMES))
 
 INCLUDE		= -I.

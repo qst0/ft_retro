@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_HPP
 # define GAMEOBJECT_HPP
 
-# include "Player.hpp"
+# include "Vec2i.hpp"
 
 class GameObject {
 
@@ -10,7 +10,8 @@ class GameObject {
 		GameObject(GameObject const & src);
 		GameObject & operator=(GameObject const & rhs);
 
-		void	update();
+		void	updateToLeft();
+		void	updateToRight();
 		void	activate(int nx, int ny);
 		void	deactivate();
 		bool	isActive() const; // gets active state 
@@ -18,8 +19,7 @@ class GameObject {
 		Vec2i	getPos() const;
 		void	setPos(Vec2i const src);
 
-
-	private:
+	protected:
 		char	object;
 		Vec2i	pos;
 		bool	active;

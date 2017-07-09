@@ -39,7 +39,7 @@ void GameObjectField::update() {
 		 if (object_set[i].getPos().y > field_bounds.y
 				+ field_bounds.height - 3) // not sure why it's minus 3, but it is
 			 object_set[i].deactivate(); */
-		 object_set[i].update();
+		 object_set[i].updateToLeft();
 	 }
 	}
 

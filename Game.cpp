@@ -103,21 +103,8 @@ void	Game::gameOver() {
 	}
 }
 
-void	Game::run() {
-
-	int maxy, maxx;
+void	Game::trailCleaner() {
 	int star_x, star_y;
-	getmaxyx(win, maxy, maxx);
-	Rect game_area(maxy, maxx); // init rect with 0,0 origin and width and height
-	stars.setBounds(game_area);
-
-	int in_char;
-	while(42){
- 
- 	// Collision detection here
-	if (collisionHandler() == true)
-		gameOver();
-
 	for (size_t i = 0; i < stars.getCount(); i++) {
 		if (stars.getData()[i].isActive()) {
 			star_x = stars.getData()[i].getPos().x;
@@ -126,21 +113,36 @@ void	Game::run() {
 		}
 	}
 
-	usleep(30000); // 30ms
+	for (size_t i = 0; i < bullet.getCount(); i++) {
+		if (bullet.getData()[i].isActive()) {
+			star_x = bullet.getData()[i].getPos().x;
+			star_y = bullet.getData()[i].getPos().y;
+			mvaddch(star_y, star_x, ' ');
+		}
+	}
+}
 
-	stars.update();
-	
-	// NEW CODE ABOVE
-
+void	Game::print() {
+	int star_x, star_y;
 	for (size_t i = 0; i < stars.getCount(); i++) {
 		if (stars.getData()[i].isActive()) {
 			star_x = stars.getData()[i].getPos().x;
 			star_y = stars.getData()[i].getPos().y;
-			mvaddch(star_y, star_x, '*');
+			mvaddch(star_y, star_x, '@');
 		}
 	}
+	for (size_t i = 0; i < bullet.getCount(); i++) {
+		if (bullet.getData()[i].isActive()) {
+			star_x = bullet.getData()[i].getPos().x;
+			star_y = bullet.getData()[i].getPos().y;
+			mvaddch(star_y, star_x, '-');
+		}
+	}
+}
 
- 	in_char = wgetch(win);
+void Game::controlHandler(int maxx, int maxy) {
+	int in_char;
+	in_char = wgetch(win);
 
 	mvaddch(p1.pos.y, p1.pos.x, ' ');
 
@@ -148,6 +150,10 @@ void	Game::run() {
 	{
 		endwin();
 		std::exit(0);
+	}
+	else if (in_char == ' ') {
+		// addstr("wut??");
+		bullet.activate(p1.pos.x, p1.pos.y);
 	}
 	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 1)
 		p1.pos.y--;
@@ -157,6 +163,33 @@ void	Game::run() {
 		p1.pos.x--;
 	else if ((in_char == KEY_RIGHT || in_char == 'd') && p1.pos.x < maxx - 2)
 		p1.pos.x++;
+}
+
+void	Game::run() {
+
+	int maxy, maxx;
+	int star_x, star_y;
+	getmaxyx(win, maxy, maxx);
+	Rect game_area(maxy, maxx); // init rect with 0,0 origin and width and height
+	stars.setBounds(game_area);
+	bullet.setBounds(game_area);
+
+	
+	while(42){
+ 
+ 	// Collision detection here
+	if (collisionHandler() == true)
+		gameOver();
+
+	trailCleaner(); // Cleaning up trails for chars
+	usleep(30000); // 30ms
+
+	stars.update();
+	bullet.update();
+	
+	print();
+
+	controlHandler(maxx, maxy);
 	
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
 
@@ -166,6 +199,3 @@ void	Game::run() {
 	}
 }
 
-// void Game::close() {
-//  endwin();
-// }
