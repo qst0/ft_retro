@@ -25,6 +25,6 @@ void	Bullets::activate(int p_x, int p_y) {
 			break;
 		i++;
 	}
-	object_set[i].activate(p_x + 1, p_y);
+	object_set[i].activate(p_x, p_y);
 	// addstr("bullet active ");
 }
