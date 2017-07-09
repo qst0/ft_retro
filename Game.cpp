@@ -23,10 +23,14 @@ Game::Game( void ) : win(initscr()), p1(6, 12) {  // init() and init player 1
 	// Should make red into Blue...
 
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(3, 7, 8);
 	wbkgd(win, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
+	attron(COLOR_PAIR(3));
 	box(win, 0, 0);
+	attroff(COLOR_PAIR(3));
 	attroff(A_BOLD);
 }
 
@@ -65,16 +69,36 @@ void	Game::gameOver() {
 	int in_char;
 
 	in_char = wgetch(win);
+	attron(A_BOLD);
+	wbkgd(win, COLOR_PAIR(2));
+	mvaddch(p1.pos.y, p1.pos.x, 'X');
 	while(42) {
 		in_char = wgetch(win);
-		if (in_char == 'q')
+		if (in_char == 'q') {
+			clear();
+			endwin();
 			std::exit(0);
-		refresh();
-		move (5, 5);
+		}
+		if (in_char == 'r') {
+			attroff(A_BOLD);
+			wbkgd(win, COLOR_PAIR(1));
+			break;
+		}
+		move (11, 32);
 		std::string text = "GAME OVER";
 		for (size_t i = 0; i < text.size(); i++) {
 		  addch(text[i]);
 		  addch(' ');
+		  usleep(30000);
+		  refresh();
+		}
+		move (12, 24);
+		text = "Press `q` to quit...";
+		for (size_t i = 0; i < text.size(); i++) {
+		  addch(text[i]);
+		  addch(' ');
+		  usleep(30000);
+		  refresh();
 		}
 	}
 }
@@ -120,8 +144,11 @@ void	Game::run() {
 
 	mvaddch(p1.pos.y, p1.pos.x, ' ');
 
-	if (in_char == 'q')
+	if (in_char == 'q' || in_char == 27)
+	{
+		endwin();
 		std::exit(0);
+	}
 	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 1)
 		p1.pos.y--;
 	else if ((in_char == KEY_DOWN || in_char == 's') && p1.pos.y < maxy - 2)

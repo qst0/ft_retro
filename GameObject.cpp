@@ -23,7 +23,8 @@ GameObject & GameObject::operator=(GameObject const & rhs) {
 /* ******************************* ACTION  ******************************* */
 
 void GameObject::update() {
-	pos.y += 1;
+	//pos.y += 1;
+	pos.x -= 1;
 }
 
 void GameObject::activate(int nx, int ny) { // should set y val to -1 ??

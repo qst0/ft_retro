@@ -31,5 +31,7 @@
 *.out
 *.app
 
+# Personal Junk :)
 .nfs*
+*.swp
 ft_retro
