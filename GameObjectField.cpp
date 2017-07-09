@@ -34,7 +34,7 @@ void GameObjectField::update() {
 	for (size_t i = 0; i < object_count; i++) {
 	 if (object_set[i].isActive()) {
 		 if (object_set[i].getPos().y > field_bounds.y
-				+ field_bounds.height)
+				+ field_bounds.height - 3) // not sure why it's minus 3, but it is
 			 object_set[i].deactivate();
 		 object_set[i].update();
 	 }
@@ -46,7 +46,7 @@ void GameObjectField::update() {
 		for (size_t i = 0; i < object_count; i++) {
 			if (!object_set[i].isActive()) {
 				if (arc4random() % 10 == 1) { // unit sparcity
-					object_set[i].activate(arc4random() % field_bounds.width, 1);
+					object_set[i].activate(arc4random() % (field_bounds.width - 2) + 1, 1);
 				}
 			}
 		} //If we don't have an inactive object, so be it...
