@@ -84,13 +84,13 @@ void Game::run() {
 
 	if (in_char == 'q')
 		std::exit(0);
-	else if (in_char == KEY_UP || in_char == 'w')
+	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 1)
 		p1.pos.y--;
-	else if (in_char == KEY_DOWN || in_char == 's')
+	else if ((in_char == KEY_DOWN || in_char == 's') && p1.pos.y < maxy - 2)
 		p1.pos.y++;
-	else if (in_char == KEY_LEFT || in_char == 'a')
+	else if ((in_char == KEY_LEFT || in_char == 'a') && p1.pos.x > 1)
 		p1.pos.x--;
-	else if (in_char == KEY_RIGHT || in_char == 'd')
+	else if ((in_char == KEY_RIGHT || in_char == 'd') && p1.pos.x < maxx - 2)
 		p1.pos.x++;
 
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
