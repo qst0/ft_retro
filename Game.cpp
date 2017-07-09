@@ -72,18 +72,17 @@ void	Game::shootStar() {
 		if (stars.getData()[i].isActive()) {
 			star_x = stars.getData()[i].getPos().x;
 			star_y = stars.getData()[i].getPos().y;
-			for (size_t j = 0; j < bullet.getCount(); j++) {
-				bull_x = bullet.getData()[j].getPos().x;
-				bull_y = bullet.getData()[j].getPos().y;
-				if (star_x == bull_x && star_y == bull_y) {
+			for (size_t j = 0; j < bullets.getCount(); j++) {
+				bull_x = bullets.getData()[j].getPos().x;
+				bull_y = bullets.getData()[j].getPos().y;
+				if ((star_x - 1 == bull_x && star_y == bull_y) 
+					|| (star_x  == bull_x && star_y == bull_y)) {
 					stars.getData()[i].deactivate();
-					bullet.getData()[j].deactivate();
-					// return true;
+					bullets.getData()[j].deactivate();
 				}
 			}
 		}
 	}
-	// return false;
 }
 
 void	Game::gameOver() {
@@ -172,9 +171,8 @@ void Game::controlHandler(int maxx, int maxy) {
 		endwin();
 		std::exit(0);
 	}
-	else if (in_char == ' ') {
+	else if (in_char == ' ')
 		bullets.activate(p1.pos.x, p1.pos.y);
-	}
 	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 1)
 		p1.pos.y--;
 	else if ((in_char == KEY_DOWN || in_char == 's') && p1.pos.y < maxy - 2)

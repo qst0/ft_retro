@@ -34,12 +34,16 @@ void GameObject::updateToRight() {
 }
 
 void GameObject::activate(int nx, int ny) { // should set y val to -1 ??
+	mvaddch(pos.y, pos.x, ' ');
 	pos.x = nx;
 	pos.y = ny;
 	active = true;
 }
 
 void GameObject::deactivate() {
+	mvaddch(pos.y, pos.x, ' ');
+	pos.x = -42;
+	pos.y = -42;
 	active = false;
 }
 
