@@ -7,6 +7,9 @@ We have hit the wall with this tutorial:
 https://github.com/fundamelon/terminal-game-tutorial
 
 Things are falling now, that's good.
+Things are falling withing the boundaries, that's gooder!
+Player cannot move beyond the map.
+
 
 We have a few ideas for moving forward:
 
