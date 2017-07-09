@@ -32,6 +32,7 @@
 *.app
 
 # Personal Junk :)
+._*
 .nfs*
 *.swp
 ft_retro
