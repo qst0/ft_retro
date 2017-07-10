@@ -28,14 +28,14 @@ public:
 	Game & operator=(Game const & rhs);
 	~Game();
 
-	void						run();
+	int							run();
 	void						init();
 	bool						collisionHandler();	// returns true if collision is detected?
 	void						shootStar();
 	void						trailCleaner();
 	void						print();
 	void						controlHandler(int maxx, int maxy);
-	void						gameOver(); // if collision detected puts Game Over screen
+	int							gameOver(); // if collision detected puts Game Over screen
 
 private:
 

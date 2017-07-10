@@ -95,7 +95,7 @@ void	Game::shootStar() {
 	}
 }
 
-void	Game::gameOver() {
+int	Game::gameOver() {
 	int in_char;
 
 	in_char = wgetch(main_window);
@@ -105,15 +105,17 @@ void	Game::gameOver() {
 	while(42) {
 		in_char = wgetch(main_window);
 		if (in_char == 'q') {
-			clear();
-			endwin();
-			std::exit(0);
+			return 0;
+			// clear();
+			// endwin();
+			// std::exit(0);
 		}
 		if (in_char == 'r') {
-			score = 0;
-			attroff(A_BOLD);
-			wbkgd(main_window, COLOR_PAIR(1));
-			break;
+			return 1;
+			// score = 0;
+			// attroff(A_BOLD);
+			// wbkgd(main_window, COLOR_PAIR(1));
+			// break;
 		}
 
 		attron(COLOR_PAIR(5));
@@ -251,11 +253,12 @@ void	Game::init() {
 			  refresh();
 			}
 		}
-		run();
+		return ;
+		// run();
 	}
 }
 
-void	Game::run() {
+int	Game::run() {
 
 	int maxy, maxx;
 	int star_x, star_y;
@@ -270,7 +273,7 @@ void	Game::run() {
 	tick++;	
  	// Collision detection here
 	if (collisionHandler() == true)
-		gameOver();
+		return gameOver();
 
 	shootStar();
 	trailCleaner(); // Cleaning up trails for chars
@@ -300,5 +303,6 @@ void	Game::run() {
 			
 	refresh();
 	}
+	return 0;
 }
 

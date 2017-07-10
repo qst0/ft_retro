@@ -3,12 +3,16 @@
 int main(int argc, char** argv) {
  (void)argc;
  (void)argv;
- Game game;
+ int run;
+ Game *game = new Game;
 
- // if(game.init() == 0)
- game.init();
-	 // game.run();
- 
- // game.close();
+ game->init();
+ run = game->run();
+ while (run == 1) {
+ 	delete game;
+ 	game = new Game();
+ 	run = game->run();
+ }
+ delete game;
  return (0);
 }
