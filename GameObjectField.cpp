@@ -57,7 +57,7 @@ size_t GameObjectField::update() {
 					// Spawn at the far right
 					object_set[i].activate(
 					 (field_bounds.width - 2),
-					 (arc4random() % (field_bounds.height - 2)) + 1);
+					 (arc4random() % (field_bounds.height - 4)) + 3);
 
 					// Spawn at the top
 					//object_set[i].activate(

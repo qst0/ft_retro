@@ -1,4 +1,4 @@
-#include <iostream> //arc4random
+#include <iostream>
 #include <ncurses.h>
 #include "GameObject.hpp"
 

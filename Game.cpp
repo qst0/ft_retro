@@ -116,7 +116,7 @@ int	Game::gameOver() {
 		attron(COLOR_PAIR(5));
 		std::string text[] = { "GAME OVER", "Press 'q' to quit", "Press 'r' to restart" };
 		for (size_t j = 0; j < 3; j++) {
-			move((maxy / 2) - 2 + j, (maxx / 2) - (text[j].length())) - 2;
+			move((maxy / 2) + j, (maxx / 2) - (text[j].length())) - 2;
 			for (size_t i = 0; i < text[j].size(); i++) {
 			  addch(text[j][i]);
 			  addch(' ');
@@ -186,12 +186,16 @@ void	Game::print() {
 		}
 	}
 	//Show score!
-	move (0, 0);
+	move (1, 2);
+	attron(A_BOLD);
+	addstr("SCORE: ");
+	move (1, 9);
 	std::string text = std::to_string(score);
 	for (size_t i = 0; i < text.size(); i++) {
 		addch(text[i]);
 		refresh();
 	}
+	attroff(A_BOLD);
 }
 
 void Game::controlHandler(int maxx, int maxy) {
@@ -207,7 +211,7 @@ void Game::controlHandler(int maxx, int maxy) {
 	}
 	else if (in_char == ' ')
 		bullets.activate(p1.pos.x, p1.pos.y);
-	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 1)
+	else if ((in_char == KEY_UP || in_char == 'w') && p1.pos.y > 3)
 		p1.pos.y--;
 	else if ((in_char == KEY_DOWN || in_char == 's') && p1.pos.y < maxy - 2)
 		p1.pos.y++;
@@ -253,13 +257,16 @@ int	Game::run() {
 	int star_x, star_y;
 	getmaxyx(main_window, maxy, maxx);
 	// init rect with 0,0 origin and width and height
-	Rect game_area(maxy, maxx);
+	Rect game_area(4, 0, maxy, maxx);
 	stars.setBounds(game_area);
 	dust.setBounds(game_area);
 	bullets.setBounds(game_area);
 	
 	while(42){
 	tick++;	
+	move(2, 1);
+	for (int i = 0; i < maxx - 2; i++)
+		addch('-');
  	// Collision detection here
 	if (collisionHandler() == true)
 		return gameOver();
@@ -289,7 +296,6 @@ int	Game::run() {
 		wbkgd(main_window, COLOR_PAIR(3)); 
 		usleep(9001);
 	}
-			
 	refresh();
 	}
 	return 0;
