@@ -6,7 +6,6 @@
 void	Bullets::update() {
 	for (size_t i = 0; i < object_count; i++) {
 		if (object_set[i].isActive()) {
-		   	// deactivate if out of bounds
 			if (object_set[i].getPos().x == field_bounds.width - 2)
 				object_set[i].deactivate();
 			object_set[i].updateToRight();
