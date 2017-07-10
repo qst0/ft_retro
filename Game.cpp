@@ -209,6 +209,18 @@ void	Game::print() {
 		refresh();
 	}
 	attroff(A_BOLD);
+
+	//Time
+	move (1, 69);
+	attron(A_BOLD);
+	addstr("SECS: ");
+	move (1, 75);
+	std::string time = std::to_string(static_cast<long int>(std::difftime(std::time(NULL), start)));
+	for (size_t i = 0; i < time.size(); i++) {
+		addch(time[i]);
+		refresh();
+	}
+	attroff(A_BOLD);
 }
 
 void Game::controlHandler(int maxx, int maxy) {
@@ -277,6 +289,9 @@ int	Game::run() {
 
 	//Rouge @ sign
 	stars.getData()[13].activate(32,13);
+
+	//Start time
+	start = std::time(NULL);
 
 	//Player 
 
