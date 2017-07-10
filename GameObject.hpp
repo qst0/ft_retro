@@ -9,6 +9,7 @@ class GameObject {
 		GameObject();
 		GameObject(GameObject const & src);
 		GameObject & operator=(GameObject const & rhs);
+		~GameObject();
 
 		void	updateToLeft();
 		void	updateToRight();

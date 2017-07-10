@@ -29,32 +29,45 @@ GameObjectField::~GameObjectField() {
 
 /* ******************************* ACTION  ******************************* */
 
-void GameObjectField::update() {
+size_t GameObjectField::update() {
+	size_t score_mod = 0;
 	//Update all active objects
 	for (size_t i = 0; i < object_count; i++) {
 	 if (object_set[i].isActive()) {
-		 if (object_set[i].getPos().x < field_bounds.x + 2) // not sure why it's minus 3, but it is
+		 // + 2 for boarder
+		 if (object_set[i].getPos().x < field_bounds.x + 2) {
 			 object_set[i].deactivate();
-		 /*
-		 if (object_set[i].getPos().y > field_bounds.y
-				+ field_bounds.height - 3) // not sure why it's minus 3, but it is
-			 object_set[i].deactivate(); */
+			 score_mod++;
+		 } else {
 		 object_set[i].updateToLeft();
+		 }
 	 }
 	}
 
-	//Find an inactive object, activate it.
-	if (arc4random() % 10 == 1) // wave sparcity
+	//Find inactive objects, activate them.
+	if (arc4random() % 2 == 1) // wave sparcity
 	{
 		for (size_t i = 0; i < object_count; i++) {
 			if (!object_set[i].isActive()) {
-				if (arc4random() % 10 == 1) { // unit sparcity	
-					object_set[i].activate((field_bounds.width - 2), (arc4random() % (field_bounds.height - 2)) + 1);
-					//object_set[i].activate(arc4random() % (field_bounds.width - 2) + 1, 1);
+				if (arc4random() % 10 == 1) { // unit sparcity
+
+					// Why doesn't one laser destroy an `@` ?
+					//OBJECTS CAN SPAWN ONTOP OF OTHER OBJECTS!
+					
+					// Spawn at the far right
+					object_set[i].activate(
+					 (field_bounds.width - 2),
+					 (arc4random() % (field_bounds.height - 2)) + 1);
+
+					// Spawn at the top
+					//object_set[i].activate(
+					// arc4random() % (field_bounds.width - 2) + 1, 1);
 				}
 			}
-		} //If we don't have an inactive object, so be it...
+		} //If we don't have inactive objects, so be it...
 	}
+
+	return score_mod;
 }
 
 void GameObjectField::setBounds(Rect r) {

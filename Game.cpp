@@ -7,6 +7,9 @@ Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init pla
 	clear();
 	refresh();
 
+	tick = 0;
+	score = 0;
+
 	keypad(main_window, true); //interpret action keys, not escape sequences.
 	nodelay(main_window, true); //disable wgetch blocking.
 	curs_set(0); //make cursor invisible.
@@ -24,13 +27,14 @@ Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init pla
 
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
-	init_pair(3, 7, 8);
+	init_pair(3, COLOR_BLACK, COLOR_GREEN);
+	init_pair(4, COLOR_WHITE, COLOR_RED);
 	wbkgd(main_window, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
-	attron(COLOR_PAIR(3));
+	attron(COLOR_PAIR(1));
 	box(main_window, 0, 0);
-	attroff(COLOR_PAIR(3));
+	attroff(COLOR_PAIR(1));
 	attroff(A_BOLD);
 }
 
@@ -75,10 +79,14 @@ void	Game::shootStar() {
 			for (size_t j = 0; j < bullets.getCount(); j++) {
 				bull_x = bullets.getData()[j].getPos().x;
 				bull_y = bullets.getData()[j].getPos().y;
+				//Questionable checking...
 				if ((star_x - 1 == bull_x && star_y == bull_y) 
+					|| (star_x  == bull_x + 1 && star_y == bull_y)
 					|| (star_x  == bull_x && star_y == bull_y)) {
 					stars.getData()[i].deactivate();
 					bullets.getData()[j].deactivate();
+					// Give score for destroying @'s
+					score += 10;
 				}
 			}
 		}
@@ -104,6 +112,8 @@ void	Game::gameOver() {
 			wbkgd(main_window, COLOR_PAIR(1));
 			break;
 		}
+
+		attron(COLOR_PAIR(4));
 		move (11, 32);
 		std::string text = "GAME OVER";
 		for (size_t i = 0; i < text.size(); i++) {
@@ -112,14 +122,15 @@ void	Game::gameOver() {
 		  usleep(30000);
 		  refresh();
 		}
-		move (12, 24);
-		text = "Press `q` to quit...";
+		move (12, 25);
+		text = "Press `q` to quit";
 		for (size_t i = 0; i < text.size(); i++) {
 		  addch(text[i]);
 		  addch(' ');
 		  usleep(30000);
 		  refresh();
 		}
+		attroff(COLOR_PAIR(4));
 	}
 }
 
@@ -158,6 +169,13 @@ void	Game::print() {
 			mvaddch(star_y, star_x, '-');
 		}
 	}
+	//Show score!
+	move (0, 0);
+	std::string text = std::to_string(score);
+	for (size_t i = 0; i < text.size(); i++) {
+		addch(text[i]);
+		refresh();
+	}
 }
 
 void Game::controlHandler(int maxx, int maxy) {
@@ -194,6 +212,7 @@ void	Game::run() {
 	bullets.setBounds(game_area);
 	
 	while(42){
+	tick++;	
  	// Collision detection here
 	if (collisionHandler() == true)
 		gameOver();
@@ -201,8 +220,13 @@ void	Game::run() {
 	shootStar();
 	trailCleaner(); // Cleaning up trails for chars
 
-	stars.update();
+	size_t score_mod;
+
+	score_mod = stars.update();
 	bullets.update();
+
+	if (score_mod <= score)
+		score -= score_mod;
 
 	print();
 
@@ -210,7 +234,13 @@ void	Game::run() {
 
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
 
-	usleep(42000); // 42ms
+	// If the player makes it 1000 ticks into the game: WARP SPEED!
+	if (tick < 1000)
+		usleep(42000 - tick * 10); // 42ms
+	else {
+		wbkgd(main_window, COLOR_PAIR(3)); 
+		usleep(9001);
+	}
 			
 	refresh();
 	}

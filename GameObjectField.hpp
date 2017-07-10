@@ -15,7 +15,7 @@ public:
 	GameObjectField & operator=(GameObjectField const & rhs);
 	~GameObjectField();
 
-	void				update();
+	size_t				update();
 	void				setBounds(Rect r);
 
 	GameObject*	getData() const;

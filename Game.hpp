@@ -15,6 +15,9 @@ public:
 	WINDOW*						main_window;
 	WINDOW*						game_window;
 
+	size_t						tick;
+	size_t						score;
+
 	Player						p1;
 	GameObjectField				stars;
 	Bullets						bullets;
