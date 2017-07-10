@@ -33,7 +33,7 @@ Game::Game( void ) : main_window(initscr()), p1(13, 5) {  // init() and init pla
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
 	init_pair(7, COLOR_BLUE, COLOR_WHITE);
 	wbkgd(main_window, COLOR_PAIR(1)); 
-
+	
 	attron(A_BOLD);
 	attron(COLOR_PAIR(1));
 	box(main_window, 0, 0);
@@ -329,10 +329,24 @@ int	Game::run() {
 		usleep(42000 - tick * 10); // 42ms
 	else if (tick < 5000)
 	{
+		if (tick == 3000)
+		{
+			init_pair(2, 9, COLOR_WHITE);
+			init_pair(6, COLOR_BLUE, COLOR_WHITE);
+			init_pair(4, 8, COLOR_WHITE);
+		}
+
 		wbkgd(main_window, COLOR_PAIR(7)); 
 		usleep(10001);
 	}
 	else {
+		if (tick == 3000)
+		{
+			init_pair(2, 0, COLOR_GREEN);
+			init_pair(6, COLOR_CYAN, COLOR_GREEN);
+			init_pair(4, 9, COLOR_WHITE);
+		}
+
 		wbkgd(main_window, COLOR_PAIR(3)); 
 		usleep(9001);
 	}
