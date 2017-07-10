@@ -32,7 +32,8 @@
 *.app
 
 # Personal Junk :)
-._*
+.DS_Store*
+._DS_Store*
 .nfs*
 *.swp
 ft_retro

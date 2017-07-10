@@ -86,7 +86,8 @@ void	Game::shootStar() {
 					|| (star_x  == bull_x + 1 && star_y == bull_y)
 					|| (star_x  == bull_x && star_y == bull_y)) {
 					stars.getData()[i].deactivate();
-					bullets.getData()[j].deactivate();
+					if (score < 1000)
+						bullets.getData()[j].deactivate();
 					// Give score for destroying @'s
 					score += 10;
 					system("afplay -t 20 ./mp3/explosion.mp3 &");
@@ -257,7 +258,8 @@ int	Game::run() {
 	stars.setBounds(game_area);
 	dust.setBounds(game_area);
 	bullets.setBounds(game_area);
-	
+	stars.getData()[13].activate(32,13);
+
 	while(42){
 	tick++;	
  	// Collision detection here
