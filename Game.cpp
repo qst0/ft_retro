@@ -97,6 +97,8 @@ void	Game::shootStar() {
 
 int	Game::gameOver() {
 	int in_char;
+	int maxy, maxx;
+	getmaxyx(main_window, maxy, maxx);
 
 	in_char = wgetch(main_window);
 	attron(A_BOLD);
@@ -104,31 +106,22 @@ int	Game::gameOver() {
 	mvaddch(p1.pos.y, p1.pos.x, 'X');
 	while(42) {
 		in_char = wgetch(main_window);
-		if (in_char == 'q') {
+		if (in_char == 'q')
 			return 0;
-			// clear();
-			// endwin();
-			// std::exit(0);
-		}
-		if (in_char == 'r') {
+		if (in_char == 'r')
 			return 1;
-			// score = 0;
-			// attroff(A_BOLD);
-			// wbkgd(main_window, COLOR_PAIR(1));
-			// break;
-		}
 
 		attron(COLOR_PAIR(5));
-		move (11, 32);
 		std::string text = "GAME OVER";
+		move((maxy / 2) - 1, ((maxx / 2) - (text.length())) - 2); //x , y
 		for (size_t i = 0; i < text.size(); i++) {
 		  addch(text[i]);
 		  addch(' ');
 		  usleep(30000);
 		  refresh();
 		}
-		move (12, 25);
 		text = "Press `q` to quit";
+		move((maxy / 2), ((maxx / 2) - (text.length())) - 2);
 		for (size_t i = 0; i < text.size(); i++) {
 		  addch(text[i]);
 		  addch(' ');
