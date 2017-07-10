@@ -21,4 +21,5 @@ void	Bullets::activate(int p_x, int p_y) {
 			break;
 		}
 	}
+	system("afplay -t 20 ./mp3/pew.mp3 &");
 }

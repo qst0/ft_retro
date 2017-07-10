@@ -89,6 +89,7 @@ void	Game::shootStar() {
 					bullets.getData()[j].deactivate();
 					// Give score for destroying @'s
 					score += 10;
+					system("afplay -t 20 ./mp3/explosion.mp3 &");
 				}
 			}
 		}
@@ -101,6 +102,7 @@ int	Game::gameOver() {
 	getmaxyx(main_window, maxy, maxx);
 
 	in_char = wgetch(main_window);
+	system("afplay -t 20 ./mp3/ded.mp3 &");
 	attron(A_BOLD);
 	wbkgd(main_window, COLOR_PAIR(2));
 	mvaddch(p1.pos.y, p1.pos.x, 'X');
@@ -112,21 +114,15 @@ int	Game::gameOver() {
 			return 1;
 
 		attron(COLOR_PAIR(5));
-		std::string text = "GAME OVER";
-		move((maxy / 2) - 1, ((maxx / 2) - (text.length())) - 2); //x , y
-		for (size_t i = 0; i < text.size(); i++) {
-		  addch(text[i]);
-		  addch(' ');
-		  usleep(30000);
-		  refresh();
-		}
-		text = "Press `q` to quit";
-		move((maxy / 2), ((maxx / 2) - (text.length())) - 2);
-		for (size_t i = 0; i < text.size(); i++) {
-		  addch(text[i]);
-		  addch(' ');
-		  usleep(30000);
-		  refresh();
+		std::string text[] = { "GAME OVER", "Press 'q' to quit", "Press 'r' to restart" };
+		for (size_t j = 0; j < 3; j++) {
+			move((maxy / 2) - 2 + j, (maxx / 2) - (text[j].length())) - 2;
+			for (size_t i = 0; i < text[j].size(); i++) {
+			  addch(text[j][i]);
+			  addch(' ');
+			  usleep(30000);
+			  refresh();
+			}
 		}
 		attroff(COLOR_PAIR(5));
 	}
