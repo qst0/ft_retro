@@ -3,6 +3,7 @@
 
 # include <ncurses.h>
 # include <string>
+# include <ctime>
 
 // # include "GameObjectField.hpp" // contains GameObject.hpp and Rect.hpp and Player.hpp
 # include "Bullets.hpp"
@@ -17,6 +18,7 @@ public:
 
 	size_t						tick;
 	size_t						score;
+	std::time_t				start;
 
 	Player						p1;
 	GameObjectField		stars;
