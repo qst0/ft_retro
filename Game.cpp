@@ -204,6 +204,31 @@ void Game::controlHandler(int maxx, int maxy) {
 		p1.pos.x++;
 }
 
+void	Game::init() {
+	int maxy, maxx, round, key;
+	std::string text[] = {"It's the year 42-XX...", "Twitter has become sentient",
+												"Rogue '@' symbols have", "started attacking mankind.", 
+												"Our future depends on you!", " ", "< Hit 'space' to start >"};
+
+	round = 0;
+	getmaxyx(main_window, maxy, maxx);
+	while (42) {
+		for (size_t j = 0; j < 7; j++) {
+			move((maxy / 2) - 4 + j, (maxx / 2) - (text[j].length())) - 2;
+			for (size_t i = 0; i < text[j].size(); i++) {
+			  addch(text[j][i]);
+			  addch(' ');
+			  usleep(30000);
+			  refresh();
+			}
+			usleep(300000);
+		}
+		key = wgetch(main_window);
+		if (key == ' ')
+			run();
+	}
+}
+
 void	Game::run() {
 
 	int maxy, maxx;

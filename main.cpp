@@ -6,7 +6,8 @@ int main(int argc, char** argv) {
  Game game;
 
  // if(game.init() == 0)
-	 game.run();
+ game.init();
+	 // game.run();
  
  // game.close();
  return (0);
