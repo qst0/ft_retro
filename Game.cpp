@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include "GameObjectField.hpp"
 
-Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init player 1 
+Game::Game( void ) : main_window(initscr()), p1(13, 5) {  // init() and init player 1 
 	cbreak();
 	noecho();
 	clear();
@@ -143,7 +143,8 @@ void	Game::trailCleaner() {
 		if (dust.getData()[i].isActive()) {
 			star_x = dust.getData()[i].getPos().x;
 			star_y = dust.getData()[i].getPos().y;
-			mvaddch(star_y, star_x, ' ');
+			if (star_x != p1.pos.x || star_y != p1.pos.y)
+			 mvaddch(star_y, star_x, ' ');
 		}
 	}
 
@@ -151,7 +152,8 @@ void	Game::trailCleaner() {
 		if (bullets.getData()[i].isActive()) {
 			star_x = bullets.getData()[i].getPos().x;
 			star_y = bullets.getData()[i].getPos().y;
-			mvaddch(star_y, star_x, ' ');
+			if (star_x != p1.pos.x || star_y != p1.pos.y)
+			 mvaddch(star_y, star_x, ' ');
 		}
 	}
 }
@@ -171,9 +173,13 @@ void	Game::print() {
 		if (dust.getData()[i].isActive()) {
 			star_x = dust.getData()[i].getPos().x;
 			star_y = dust.getData()[i].getPos().y;
-			attron(COLOR_PAIR(4));
-			mvaddch(star_y, star_x, '.');
-			attroff(COLOR_PAIR(4));
+
+			if (star_x != p1.pos.x || star_y != p1.pos.y)
+			{
+				attron(COLOR_PAIR(4));
+				mvaddch(star_y, star_x, '.');
+				attroff(COLOR_PAIR(4));
+			}
 		}
 	}
 
@@ -181,9 +187,15 @@ void	Game::print() {
 		if (bullets.getData()[i].isActive()) {
 			star_x = bullets.getData()[i].getPos().x;
 			star_y = bullets.getData()[i].getPos().y;
-			attron(COLOR_PAIR(2));
-			mvaddch(star_y, star_x, '-');
-			attroff(COLOR_PAIR(2));
+			if (star_x != p1.pos.x || star_y != p1.pos.y)
+			{
+				attron(COLOR_PAIR(2));
+				if (score > 1000)
+					mvaddch(star_y, star_x, '=');	
+				else
+					mvaddch(star_y, star_x, '-');
+				attroff(COLOR_PAIR(2));
+			}
 		}
 	}
 	//Show score!
@@ -262,7 +274,11 @@ int	Game::run() {
 	stars.setBounds(game_area);
 	dust.setBounds(game_area);
 	bullets.setBounds(game_area);
+
+	//Rouge @ sign
 	stars.getData()[13].activate(32,13);
+
+	//Player 
 
 	while(42){
 	tick++;	
@@ -278,12 +294,14 @@ int	Game::run() {
 
 	size_t score_mod;
 
-	score_mod = stars.update();
+	if (tick > 42) {
+		score_mod = stars.update();
+		if (score_mod <= score)
+			score -= score_mod;
+	}
+	
 	dust.update();
 	bullets.update();
-
-	if (score_mod <= score)
-		score -= score_mod;
 
 	print();
 
