@@ -6,7 +6,7 @@
 
 // # include "GameObjectField.hpp" // contains GameObject.hpp and Rect.hpp and Player.hpp
 # include "Bullets.hpp"
-# include "Player.hpp"
+# include "Player.hpp" // has GameObjectField.hpp
 
 class Game {
 
@@ -29,6 +29,7 @@ public:
 	~Game();
 
 	void						run();
+	void						init();
 	bool						collisionHandler();	// returns true if collision is detected?
 	void						shootStar();
 	void						trailCleaner();
