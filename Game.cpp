@@ -28,7 +28,8 @@ Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init pla
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, COLOR_BLACK, COLOR_GREEN);
-	init_pair(4, COLOR_WHITE, COLOR_RED);
+	init_pair(4, 8, COLOR_BLACK);
+	init_pair(5, COLOR_WHITE, COLOR_RED);
 	wbkgd(main_window, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
@@ -144,6 +145,14 @@ void	Game::trailCleaner() {
 		}
 	}
 
+	for (size_t i = 0; i < dust.getCount(); i++) {
+		if (dust.getData()[i].isActive()) {
+			star_x = dust.getData()[i].getPos().x;
+			star_y = dust.getData()[i].getPos().y;
+			mvaddch(star_y, star_x, ' ');
+		}
+	}
+
 	for (size_t i = 0; i < bullets.getCount(); i++) {
 		if (bullets.getData()[i].isActive()) {
 			star_x = bullets.getData()[i].getPos().x;
@@ -162,11 +171,23 @@ void	Game::print() {
 			mvaddch(star_y, star_x, '@');
 		}
 	}
+	for (size_t i = 0; i < dust.getCount(); i++) {
+		if (dust.getData()[i].isActive()) {
+			star_x = dust.getData()[i].getPos().x;
+			star_y = dust.getData()[i].getPos().y;
+			attron(COLOR_PAIR(4));
+			mvaddch(star_y, star_x, '.');
+			attroff(COLOR_PAIR(4));
+		}
+	}
+
 	for (size_t i = 0; i < bullets.getCount(); i++) {
 		if (bullets.getData()[i].isActive()) {
 			star_x = bullets.getData()[i].getPos().x;
 			star_y = bullets.getData()[i].getPos().y;
+			attron(COLOR_PAIR(2));
 			mvaddch(star_y, star_x, '-');
+			attroff(COLOR_PAIR(2));
 		}
 	}
 	//Show score!
@@ -209,6 +230,7 @@ void	Game::run() {
 	// init rect with 0,0 origin and width and height
 	Rect game_area(maxy, maxx);
 	stars.setBounds(game_area);
+	dust.setBounds(game_area);
 	bullets.setBounds(game_area);
 	
 	while(42){
@@ -223,6 +245,7 @@ void	Game::run() {
 	size_t score_mod;
 
 	score_mod = stars.update();
+	dust.update();
 	bullets.update();
 
 	if (score_mod <= score)
@@ -238,7 +261,7 @@ void	Game::run() {
 	if (tick < 1000)
 		usleep(42000 - tick * 10); // 42ms
 	else {
-		wbkgd(main_window, COLOR_PAIR(3)); 
+		wbkgd(main_window, COLOR_PAIR(5)); 
 		usleep(9001);
 	}
 			

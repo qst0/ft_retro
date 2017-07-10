@@ -19,7 +19,8 @@ public:
 	size_t						score;
 
 	Player						p1;
-	GameObjectField				stars;
+	GameObjectField		stars;
+	GameObjectField		dust;
 	Bullets						bullets;
 
 	Game();
