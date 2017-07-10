@@ -44,11 +44,11 @@ void GameObjectField::update() {
 	}
 
 	//Find an inactive object, activate it.
-	if (arc4random() % 10 == 1) // wave sparcity
+	if (arc4random() % 8 == 1) // wave sparcity
 	{
 		for (size_t i = 0; i < object_count; i++) {
 			if (!object_set[i].isActive()) {
-				if (arc4random() % 10 == 1) { // unit sparcity	
+				if (arc4random() % 9 == 1) { // unit sparcity	
 					object_set[i].activate((field_bounds.width - 2), (arc4random() % (field_bounds.height - 2)) + 1);
 					//object_set[i].activate(arc4random() % (field_bounds.width - 2) + 1, 1);
 				}

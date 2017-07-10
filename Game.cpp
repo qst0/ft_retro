@@ -25,6 +25,7 @@ Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init pla
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_RED, COLOR_BLACK);
 	init_pair(3, 7, 8);
+	init_pair(4, 8, COLOR_BLACK);
 	wbkgd(main_window, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
@@ -133,6 +134,14 @@ void	Game::trailCleaner() {
 		}
 	}
 
+	for (size_t i = 0; i < dust.getCount(); i++) {
+		if (dust.getData()[i].isActive()) {
+			star_x = dust.getData()[i].getPos().x;
+			star_y = dust.getData()[i].getPos().y;
+			mvaddch(star_y, star_x, ' ');
+		}
+	}
+
 	for (size_t i = 0; i < bullets.getCount(); i++) {
 		if (bullets.getData()[i].isActive()) {
 			star_x = bullets.getData()[i].getPos().x;
@@ -151,11 +160,23 @@ void	Game::print() {
 			mvaddch(star_y, star_x, '@');
 		}
 	}
+	for (size_t i = 0; i < dust.getCount(); i++) {
+		if (dust.getData()[i].isActive()) {
+			star_x = dust.getData()[i].getPos().x;
+			star_y = dust.getData()[i].getPos().y;
+			attron(COLOR_PAIR(4));
+			mvaddch(star_y, star_x, '.');
+			attroff(COLOR_PAIR(4));
+		}
+	}
+
 	for (size_t i = 0; i < bullets.getCount(); i++) {
 		if (bullets.getData()[i].isActive()) {
 			star_x = bullets.getData()[i].getPos().x;
 			star_y = bullets.getData()[i].getPos().y;
+			attron(COLOR_PAIR(2));
 			mvaddch(star_y, star_x, '-');
+			attroff(COLOR_PAIR(2));
 		}
 	}
 }
@@ -191,6 +212,7 @@ void	Game::run() {
 	// init rect with 0,0 origin and width and height
 	Rect game_area(maxy, maxx);
 	stars.setBounds(game_area);
+	dust.setBounds(game_area);
 	bullets.setBounds(game_area);
 	
 	while(42){
@@ -202,6 +224,7 @@ void	Game::run() {
 	trailCleaner(); // Cleaning up trails for chars
 
 	stars.update();
+	dust.update();
 	bullets.update();
 
 	print();

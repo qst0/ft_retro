@@ -16,7 +16,8 @@ public:
 	WINDOW*						game_window;
 
 	Player						p1;
-	GameObjectField				stars;
+	GameObjectField		stars;
+	GameObjectField		dust;
 	Bullets						bullets;
 
 	Game();
