@@ -26,10 +26,11 @@ Game::Game( void ) : main_window(initscr()), p1(6, 12) {  // init() and init pla
 	// Should make red into Blue...
 
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	init_pair(2, COLOR_RED, COLOR_BLACK);
+	init_pair(2, 9, COLOR_BLACK);
 	init_pair(3, COLOR_BLACK, COLOR_GREEN);
 	init_pair(4, 8, COLOR_BLACK);
 	init_pair(5, COLOR_WHITE, COLOR_RED);
+	init_pair(6, COLOR_CYAN, COLOR_BLACK);
 	wbkgd(main_window, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
@@ -109,12 +110,13 @@ void	Game::gameOver() {
 			std::exit(0);
 		}
 		if (in_char == 'r') {
+			score = 0;
 			attroff(A_BOLD);
 			wbkgd(main_window, COLOR_PAIR(1));
 			break;
 		}
 
-		attron(COLOR_PAIR(4));
+		attron(COLOR_PAIR(5));
 		move (11, 32);
 		std::string text = "GAME OVER";
 		for (size_t i = 0; i < text.size(); i++) {
@@ -131,7 +133,7 @@ void	Game::gameOver() {
 		  usleep(30000);
 		  refresh();
 		}
-		attroff(COLOR_PAIR(4));
+		attroff(COLOR_PAIR(5));
 	}
 }
 
@@ -168,7 +170,9 @@ void	Game::print() {
 		if (stars.getData()[i].isActive()) {
 			star_x = stars.getData()[i].getPos().x;
 			star_y = stars.getData()[i].getPos().y;
+			attron(COLOR_PAIR(6));
 			mvaddch(star_y, star_x, '@');
+			attroff(COLOR_PAIR(6));
 		}
 	}
 	for (size_t i = 0; i < dust.getCount(); i++) {
@@ -224,14 +228,21 @@ void Game::controlHandler(int maxx, int maxy) {
 
 void	Game::init() {
 	int maxy, maxx, round, key;
-	std::string text[] = {"It's the year 42-XX...", "Twitter has become sentient",
-												"Rogue '@' symbols have", "started attacking mankind.", 
-												"Our future depends on you!", " ", "< Hit 'space' to start >"};
+	std::string text[] = {
+		"WASD or Arrows to Move",
+		"Spacebar to Shoot",
+		"",
+		"It's the year 42-XX...",
+		"Twitter has become sentient",
+		"Rogue '@' symbols have",
+		"started attacking mankind.",
+		"Our future depends on you!",
+	};
 
 	round = 0;
 	getmaxyx(main_window, maxy, maxx);
 	while (42) {
-		for (size_t j = 0; j < 7; j++) {
+		for (size_t j = 0; j < 8; j++) {
 			move((maxy / 2) - 4 + j, (maxx / 2) - (text[j].length())) - 2;
 			for (size_t i = 0; i < text[j].size(); i++) {
 			  addch(text[j][i]);
@@ -239,11 +250,8 @@ void	Game::init() {
 			  usleep(30000);
 			  refresh();
 			}
-			usleep(300000);
 		}
-		key = wgetch(main_window);
-		if (key == ' ')
-			run();
+		run();
 	}
 }
 
@@ -283,10 +291,10 @@ void	Game::run() {
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
 
 	// If the player makes it 1000 ticks into the game: WARP SPEED!
-	if (tick < 1000)
+	if (tick < 3000)
 		usleep(42000 - tick * 10); // 42ms
 	else {
-		wbkgd(main_window, COLOR_PAIR(5)); 
+		wbkgd(main_window, COLOR_PAIR(3)); 
 		usleep(9001);
 	}
 			

@@ -1,11 +1,28 @@
 # C++ Piscine Rush00
 ## ft\_retro
 
+It's the year 42-XX...
+
+Twitter has become sentient
+
+Rouge `@` symbols have started attacking mankind.
+
+Our future depends on you!
+
+*Controls:*
+
+* Arrows or WASD movement.
+* Spacebar to fire lasers
+
 ## Current Status:
 
 Fly through text-space dodging rouge `@` symbols!
 
 Press the space bar to shoot bullets `-` at them!
+
+You gain 10 points per `@` destroyed!
+
+You lose 1 point per `@` that makes it past you!
 
 Hoo-rah! We have a basic game working!
 
@@ -19,14 +36,13 @@ We have a few ideas for moving forward:
 
 * Clock based time via `clock_t clock (void)`
 * Window / Area to show score, game messages and story
-* Scoring for destroyed `@` and time spent alive.
+* Scoring for time spent alive 
 
-Here are our old ideas:
+Here are some old ideas:
 
 * player drops stuff
 * ground grows to try and kill the player
 * good falling stuff / bad falling stuff
-* story ??? :)
 
 ## Game Ideas:
 
