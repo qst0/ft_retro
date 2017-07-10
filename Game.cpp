@@ -31,6 +31,7 @@ Game::Game( void ) : main_window(initscr()), p1(13, 5) {  // init() and init pla
 	init_pair(4, 8, COLOR_BLACK);
 	init_pair(5, COLOR_WHITE, COLOR_RED);
 	init_pair(6, COLOR_CYAN, COLOR_BLACK);
+	init_pair(7, COLOR_BLUE, COLOR_WHITE);
 	wbkgd(main_window, COLOR_PAIR(1)); 
 
 	attron(A_BOLD);
@@ -247,7 +248,7 @@ void Game::controlHandler(int maxx, int maxy) {
 }
 
 void	Game::init() {
-	int maxy, maxx, round, key;
+	int maxy, maxx;
 	std::string text[] = {
 		"WASD or Arrows to Move",
 		"Spacebar to Shoot",
@@ -259,21 +260,36 @@ void	Game::init() {
 		"Our future depends on you!",
 	};
 
-	round = 0;
-	getmaxyx(main_window, maxy, maxx);
-	while (42) {
-		for (size_t j = 0; j < 8; j++) {
-			move((maxy / 2) - 4 + j, (maxx / 2) - (text[j].length())) - 2;
-			for (size_t i = 0; i < text[j].size(); i++) {
-			  addch(text[j][i]);
-			  addch(' ');
-			  usleep(30000);
-			  refresh();
-			}
-		}
-		return ;
-		// run();
+	move(13, 5);
+
+	addch('}');
+
+	std::string const you_text = "You";
+
+	move(11, 4);
+	for (size_t i = 0; i < you_text.size(); i++) {
+			addch(you_text[i]);
+			usleep(30000);
+			refresh();
 	}
+
+	move(12, 5);
+	addch('V');
+
+
+	getmaxyx(main_window, maxy, maxx);
+	for (size_t j = 0; j < 8; j++) {
+		move((maxy / 2) - 4 + j, (maxx / 2) - (text[j].length())) - 2;
+		for (size_t i = 0; i < text[j].size(); i++) {
+			addch(text[j][i]);
+			addch(' ');
+			usleep(30000);
+			refresh();
+		}
+	}
+
+
+	return ;
 }
 
 int	Game::run() {
@@ -324,9 +340,15 @@ int	Game::run() {
 
 	mvaddch(p1.pos.y, p1.pos.x, p1.disp_char);
 
-	// If the player makes it 1000 ticks into the game: WARP SPEED!
+	// If the player makes it 3000 ticks into the game: WARP SPEED!
+	// If the Player makes it to 4000 ticks: 
 	if (tick < 3000)
 		usleep(42000 - tick * 10); // 42ms
+	else if (tick < 5000)
+	{
+		wbkgd(main_window, COLOR_PAIR(7)); 
+		usleep(10001);
+	}
 	else {
 		wbkgd(main_window, COLOR_PAIR(3)); 
 		usleep(9001);
